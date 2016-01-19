@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GoustoMobileDeveloperTest</string>
+    <string name="get_products_request_failure">Failed to receive products details</string>
+</resources>
