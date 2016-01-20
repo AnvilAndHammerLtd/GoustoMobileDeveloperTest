@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kyriakosalexandrou.goustomobiledevelopertest.R;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.Image;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
 import com.squareup.picasso.Picasso;
 
@@ -60,9 +61,9 @@ public class ProductsAdapter extends BaseAdapter {
         Product product = mProducts.get(position);
 
 
-        List<Object> images = product.getImages();
+        List<Image> images = product.getImages();
         if(images != null && !images.isEmpty()){
-            String mainProductImage = (String) images.get(0);
+            String mainProductImage = images.get(0).getUrl();
             setProductImage(mainProductImage, imageview);
         } else{
             imageview.setImageResource(R.drawable.ic_wink);

@@ -21,11 +21,10 @@ import retrofit.http.GET;
  */
 public class ProductServices {
     private static final String TAG = ProductServices.class.getName();
-    private IProductyServices mService;
-
+    private IProductServices mService;
 
     public ProductServices(RestAdapter restAdapter) {
-        mService = restAdapter.create(IProductyServices.class);
+        mService = restAdapter.create(IProductServices.class);
     }
 
     /**
@@ -57,7 +56,7 @@ public class ProductServices {
         );
     }
 
-    public interface IProductyServices {
+    public interface IProductServices {
         @GET("//api.gousto.co.uk/products/v2.0/products")
         void getProducts(Callback<ProductsContainer> response);
     }

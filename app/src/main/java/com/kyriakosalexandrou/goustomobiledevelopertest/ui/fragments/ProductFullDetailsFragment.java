@@ -51,7 +51,7 @@ public class ProductFullDetailsFragment extends BaseFragment {
 
     private void setViewsProductValue() {
         if (!mProduct.getImages().isEmpty()) {
-            setViewProductImageFromUrl((String) mProduct.getImages().get(0), mImage);
+            setViewProductImageFromUrl(mProduct.getImages().get(0).getUrl(), mImage);
         } else {
             mImage.setImageResource(R.drawable.ic_wink);
         }

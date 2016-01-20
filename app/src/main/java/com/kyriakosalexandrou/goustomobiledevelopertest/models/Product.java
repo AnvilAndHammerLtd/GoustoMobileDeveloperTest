@@ -41,10 +41,10 @@ public class Product {
     private List<Category> categories = new ArrayList<Category>();
     @SerializedName("attributes")
     @Expose
-    private List<Object> attributes = new ArrayList<Object>();
+    private List<Attribute> attributes = new ArrayList<Attribute>();
     @SerializedName("images")
     @Expose
-    private List<Object> images = new ArrayList<Object>();
+    private List<Image> images = new ArrayList<Image>();
 
     /**
      * @return The id
@@ -189,28 +189,28 @@ public class Product {
     /**
      * @return The attributes
      */
-    public List<Object> getAttributes() {
+    public List<Attribute> getAttributes() {
         return attributes;
     }
 
     /**
      * @param attributes The attributes
      */
-    public void setAttributes(List<Object> attributes) {
+    public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
     }
 
     /**
      * @return The images
      */
-    public List<Object> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
     /**
      * @param images The images
      */
-    public void setImages(List<Object> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 
