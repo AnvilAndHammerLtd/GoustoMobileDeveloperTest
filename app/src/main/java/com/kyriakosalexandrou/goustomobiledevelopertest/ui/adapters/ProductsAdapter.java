@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kyriakosalexandrou.goustomobiledevelopertest.R;
-import com.kyriakosalexandrou.goustomobiledevelopertest.models.Image;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes.ImagesContainer;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
 import com.squareup.picasso.Picasso;
 
@@ -61,13 +61,22 @@ public class ProductsAdapter extends BaseAdapter {
         Product product = mProducts.get(position);
 
 
-        List<Image> images = product.getImages();
-        if(images != null && !images.isEmpty()){
-            String mainProductImage = images.get(0).getUrl();
+        List<ImagesContainer> imagesContainers = product.getImagesContainers();
+        if(imagesContainers != null && !imagesContainers.isEmpty()){
+            String mainProductImage = imagesContainers.get(0).getSize750().getUrl();
             setProductImage(mainProductImage, imageview);
         } else{
             imageview.setImageResource(R.drawable.ic_wink);
         }
+//
+
+//        ImagesContainer imagesContainer = product.getImagesContainer();
+//        if(imagesContainer != null && imagesContainer != null){
+//            String mainProductImage = imagesContainer.getSize750().getUrl();
+//            setProductImage(mainProductImage, imageview);
+//        } else{
+//            imageview.setImageResource(R.drawable.ic_wink);
+//        }
 
 
         name.setText(product.getTitle());

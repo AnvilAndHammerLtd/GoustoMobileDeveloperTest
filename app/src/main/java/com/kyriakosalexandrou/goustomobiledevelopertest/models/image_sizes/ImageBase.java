@@ -1,11 +1,12 @@
-
-package com.kyriakosalexandrou.goustomobiledevelopertest.models;
+package com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Image {
-
+/**
+ * Created by Kyriakos on 20/01/2016.
+ */
+public abstract class ImageBase {
     @SerializedName("url")
     @Expose
     private String url;
@@ -40,5 +41,4 @@ public class Image {
     public void setWidth(Integer width) {
         this.width = width;
     }
-
 }

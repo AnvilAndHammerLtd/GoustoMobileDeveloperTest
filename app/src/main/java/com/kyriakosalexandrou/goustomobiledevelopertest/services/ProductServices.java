@@ -7,6 +7,9 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.events.ProductsEvent;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.ProductsContainer;
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.fragments.ProductsFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -39,26 +42,49 @@ public class ProductServices {
      */
     public void getProductsRequest(final ProductsEvent event) {
 
-        mService.getProducts("categories", new Callback<ProductsContainer>() {
+        ArrayList<String> includes = new ArrayList<>();
+        includes.add("categories");
+        includes.add("attributes");
 
-                                 @Override
-                                 public void success(ProductsContainer productsContainer, Response response) {
-                                     Log.v(TAG, "getProductsRequest success");
-                                     event.setProducts(productsContainer.getProducts());
-                                     EventBus.getDefault().postSticky(event);
-                                 }
+        ArrayList<Integer> imageSizes = new ArrayList<>();
+        imageSizes.add(Integer.valueOf(750));
 
-                                 @Override
-                                 public void failure(RetrofitError error) {
-                                     Log.v(TAG, "getProductsRequest failure");
-                                     EventBus.getDefault().postSticky(event.getErrorEvent());
-                                 }
-                             }
+//        ArrayList<String> imageSizes = new ArrayList<>();
+//        imageSizes.add(String.valueOf(750));
+//        imageSizes.add(String.valueOf(50));
+
+        mService.getProducts(
+                includes,
+                null,
+                new Callback<ProductsContainer>() {
+
+                    @Override
+                    public void success(ProductsContainer productsContainer, Response response) {
+                        Log.v(TAG, "getProductsRequest success");
+                        event.setProducts(productsContainer.getProducts());
+                        EventBus.getDefault().postSticky(event);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.v(TAG, "getProductsRequest failure");
+                        Log.v(TAG, "getProductsRequest getUrl: " + error.getUrl());
+                        Log.v(TAG, "getProductsRequest getMessage: " + error.getMessage());
+                        EventBus.getDefault().postSticky(event.getErrorEvent());
+                    }
+                }
         );
     }
 
     public interface IProductServices {
-        @GET("/api.gousto.co.uk/products/v2.0/products")
-        void getProducts(@Query("includes[]") String includes, Callback<ProductsContainer> response);
+        @GET("//api.gousto.co.uk/products/v2.0/products")
+        void getProducts(@Query("includes[]") List<String> includes,
+                         @Query("image_sizes[]") List<Integer> imageSizes,
+                         Callback<ProductsContainer> response);
+
+//        @GET("//api.gousto.co.uk/products/v2.0/products")
+//        void getProducts(@Query("includes[]") List<String> includes,
+//                         @Query("image_sizes[]") List<Integer> imageSizes,
+//                         Callback<ProductsContainer> response);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes.ImagesContainer;
 
 public class Product {
 
@@ -44,7 +45,10 @@ public class Product {
     private List<Attribute> attributes = new ArrayList<Attribute>();
     @SerializedName("images")
     @Expose
-    private List<Image> images = new ArrayList<Image>();
+    private List<ImagesContainer> imagesContainers = new ArrayList<ImagesContainer>();
+//    @SerializedName("images")
+//    @Expose
+//    private ImagesContainer imagesContainer = new ImagesContainer();
 
     /**
      * @return The id
@@ -203,15 +207,22 @@ public class Product {
     /**
      * @return The images
      */
-    public List<Image> getImages() {
-        return images;
+    public List<ImagesContainer> getImagesContainers() {
+        return imagesContainers;
     }
 
     /**
-     * @param images The images
+     * @param imagesContainers The images
      */
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public void setImagesContainers(List<ImagesContainer> imagesContainers) {
+        this.imagesContainers = imagesContainers;
     }
-
+//
+//    public ImagesContainer getImagesContainer() {
+//        return imagesContainer;
+//    }
+//
+//    public void setImagesContainer(ImagesContainer imagesContainer) {
+//        this.imagesContainer = imagesContainer;
+//    }
 }

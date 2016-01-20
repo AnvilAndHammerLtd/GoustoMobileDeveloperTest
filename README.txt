@@ -45,3 +45,10 @@ the selected category)
 ● Create a Product Detail page with some transition between the screens
 ● Provide landscape support (with some UI adjustment, for example grid
 instead of the list in the landscape mode etc.)
+
+MY PERSONAL NOTES:
+
+when an image is not found from the server then it returns an empty list, however when an image is found then an object is returned instead of an array.
+The following error will happen when you try to serialize the json data to a wrong variable type. It makes sense, you can't set an array to an object or vice versa.
+com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 5855 path $.data[10].images
+

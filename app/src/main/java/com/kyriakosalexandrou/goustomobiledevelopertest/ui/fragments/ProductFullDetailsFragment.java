@@ -50,11 +50,19 @@ public class ProductFullDetailsFragment extends BaseFragment {
     }
 
     private void setViewsProductValue() {
-        if (!mProduct.getImages().isEmpty()) {
-            setViewProductImageFromUrl(mProduct.getImages().get(0).getUrl(), mImage);
+        if (!mProduct.getImagesContainers().isEmpty()) {
+            setViewProductImageFromUrl(mProduct.getImagesContainers().get(0).getSize750().getUrl(), mImage);
         } else {
             mImage.setImageResource(R.drawable.ic_wink);
         }
+//
+//        if (mProduct.getImagesContainer() != null) {
+//            setViewProductImageFromUrl(mProduct.getImagesContainer().getSize750().getUrl(), mImage);
+//        } else {
+//            mImage.setImageResource(R.drawable.ic_wink);
+//        }
+
+
         mId.setText(mProduct.getId());
         mTitle.setText(mProduct.getTitle());
         mDescription.setText(mProduct.getDescription());
