@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">GoustoMobileDeveloperTest</string>
     <string name="get_products_request_failure">Failed to receive products details</string>
+    <string name="product_image_content_description">Product image</string>
+    <string name="banner_image_content_description">Gousto</string>
+
+    <string name="product_id_label">ID</string>
+    <string name="product_title_label">Title</string>
+    <string name="product_description_label">Description</string>
+    <string name="product_price_label">Price</string>
+    <string name="product_age_restricted_label">Age Restricted</string>
+    <string name="product_limit_per_person">Limit Per Person</string>
 </resources>

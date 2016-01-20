@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Kyriakos on 19/01/2016.
@@ -23,15 +22,9 @@ public class ProductsAdapter extends BaseAdapter {
     private List<Product> mProducts = new ArrayList<>();
     private Context mContext;
 
-
     public ProductsAdapter(Context context) {
         mContext = context;
     }
-
-//    public ProductsAdapter(Context context, List<Product> products) {
-//        mContext = context;
-//        mProducts = products;
-//    }
 
     public void setProducts(List<Product> products) {
         mProducts = products;
@@ -85,7 +78,7 @@ public class ProductsAdapter extends BaseAdapter {
     private void setProductImage(String imageURL, ImageView imageview) {
         Picasso.with(mContext)
                 .load(imageURL)
+                .placeholder(R.drawable.ic_wink)
                 .into(imageview);
     }
-
 }

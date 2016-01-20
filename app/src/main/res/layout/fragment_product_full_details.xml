@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/main_activity_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activities.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/image_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image_value"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/banner_image_size"
+            android:layout_marginTop="@dimen/banner_image_margin"
+            android:contentDescription="@string/product_image_content_description"
+            android:src="@drawable/ic_wink" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/id_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_id_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/id_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="6T4RE" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_title_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Koupepia" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/description_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/description_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_description_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/description_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="En pezounte" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/price_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/price_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_price_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/price_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="£17" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/age_restricted_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/age_restricted_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_age_restricted_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/age_restricted_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="18yes" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/limit_per_person_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/limit_per_person_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/product_limit_per_person"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/limit_per_person_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="5 boxes" />
+    </LinearLayout>
+
+</LinearLayout>

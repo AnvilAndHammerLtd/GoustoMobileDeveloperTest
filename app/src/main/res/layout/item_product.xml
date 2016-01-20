@@ -14,12 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/ic_wink"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/product_image_content_description"
         tools:src="@drawable/ic_wink" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/image"
         android:orientation="vertical">
 
@@ -27,16 +29,17 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title" />
+            android:textStyle="bold"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:minLines="2"
-            android:text="Description" />
+            tools:text="Go oil the way with Iliada’s authentic PDO extra virgin olive oil, produced from cracking Koroneiki olives in the beautiful Kalamata region of southern Greece. A summer dining essential, lavish it on salads at sultry al fresco soirées." />
     </LinearLayout>
 
 </RelativeLayout>

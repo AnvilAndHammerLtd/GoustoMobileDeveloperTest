@@ -2,9 +2,12 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -65,14 +68,28 @@ public class ProductsFragment extends BaseFragment {
 
     @Override
     public void setListeners() {
+        mProductsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                goToProductFullDetailsFragment(mProducts.get(position));
+            }
+        });
+    }
+
+    private void goToProductFullDetailsFragment(Product product) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        ft.addToBackStack(ProductFullDetailsFragment.TAG);
+        ft.commit();
+        fm.executePendingTransactions();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         getProductsRequest();
-
     }
 
     private void getProductsRequest() {

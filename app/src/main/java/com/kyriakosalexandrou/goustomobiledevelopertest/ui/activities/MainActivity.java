@@ -30,11 +30,19 @@ public class MainActivity extends BaseActivity {
         ProductsFragment productsFragment = ProductsFragment.newInstance(getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment, productsFragment, ProductsFragment.TAG);
-        /*
-        TODO probably will need to add to backstack as i will implement
-        the product details fragment to open on top of the products fragment
-         */
+        ft.addToBackStack(ProductsFragment.TAG);
         ft.commit();
         fm.executePendingTransactions();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+
+        if (fm.getBackStackEntryCount() > 1) {
+            fm.popBackStackImmediate();
+        } else {
+            finish();
+        }
     }
 }
