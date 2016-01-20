@@ -13,6 +13,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.http.GET;
+import retrofit.http.Query;
 
 /**
  * Created by Kyriakos on 19/01/2016.
@@ -38,7 +39,7 @@ public class ProductServices {
      */
     public void getProductsRequest(final ProductsEvent event) {
 
-        mService.getProducts(new Callback<ProductsContainer>() {
+        mService.getProducts("categories", new Callback<ProductsContainer>() {
 
                                  @Override
                                  public void success(ProductsContainer productsContainer, Response response) {
@@ -57,7 +58,7 @@ public class ProductServices {
     }
 
     public interface IProductServices {
-        @GET("//api.gousto.co.uk/products/v2.0/products")
-        void getProducts(Callback<ProductsContainer> response);
+        @GET("/api.gousto.co.uk/products/v2.0/products")
+        void getProducts(@Query("includes[]") String includes, Callback<ProductsContainer> response);
     }
 }
