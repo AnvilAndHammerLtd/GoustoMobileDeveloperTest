@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">GoustoMobileDeveloperTest</string>
-    <string name="get_products_request_failure">Failed to receive products details</string>
+    <string name="get_products_request_failure">Failed to receive products</string>
+    <string name="get_categories_request_failure">Failed to receive categories</string>
     <string name="product_image_content_description">Product image</string>
     <string name="banner_image_content_description">Gousto</string>
 

@@ -13,13 +13,15 @@ import android.widget.ListView;
 
 import com.kyriakosalexandrou.goustomobiledevelopertest.R;
 import com.kyriakosalexandrou.goustomobiledevelopertest.Util;
-import com.kyriakosalexandrou.goustomobiledevelopertest.events.ProductsEvent;
+import com.kyriakosalexandrou.goustomobiledevelopertest.events.CategoriesEvent;
 import com.kyriakosalexandrou.goustomobiledevelopertest.events.ErrorEvent;
+import com.kyriakosalexandrou.goustomobiledevelopertest.events.ProductsEvent;
 import com.kyriakosalexandrou.goustomobiledevelopertest.helpers.BaseProgressBarHelper;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.Category;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
-import com.kyriakosalexandrou.goustomobiledevelopertest.services.ProductServices;
-import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.ProductsAdapter;
+import com.kyriakosalexandrou.goustomobiledevelopertest.services.ProductsServicesMediator;
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.activities.BaseActivity;
+import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.ProductsAdapter;
 
 import java.util.List;
 
@@ -33,8 +35,13 @@ public class ProductsFragment extends BaseFragment {
 
     private ListView mProductsList;
     private ProductsAdapter mProductsAdapter;
-    private List<Product> mProducts;
+
     private ImageView mTopBannerImage;
+
+    private List<Product> mProducts;
+    private List<Category> mCategories;
+
+    private ProductsServicesMediator mProductsServicesMediator;
 
     public ProductsFragment() {
     }
@@ -42,6 +49,8 @@ public class ProductsFragment extends BaseFragment {
     public static ProductsFragment newInstance(BaseProgressBarHelper baseProgressBarHelper) {
         ProductsFragment fragment = new ProductsFragment();
         fragment.setProgressBarHelper(baseProgressBarHelper);
+        fragment.mProductsServicesMediator = new ProductsServicesMediator(BaseActivity.REST_ADAPTER);
+
         return fragment;
     }
 
@@ -89,14 +98,27 @@ public class ProductsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getCategoriesRequest();
         getProductsRequest();
     }
 
     private void getProductsRequest() {
         getProgressBarHelper().showProgressBar();
-        ProductServices mProductServices = new ProductServices(BaseActivity.REST_ADAPTER);
         ErrorEvent errorEvent = new ErrorEvent(getResources().getString(R.string.get_products_request_failure));
-        mProductServices.getProductsRequest(new ProductsEvent(errorEvent));
+        mProductsServicesMediator.getProductsRequest(new ProductsEvent(errorEvent));
+    }
+
+    private void getCategoriesRequest() {
+        getProgressBarHelper().showProgressBar();
+        ErrorEvent errorEvent = new ErrorEvent(getResources().getString(R.string.get_categories_request_failure));
+        mProductsServicesMediator.getCategoriesRequest(new CategoriesEvent(errorEvent));
+    }
+
+    public void onEventMainThread(CategoriesEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
+        getProgressBarHelper().hideProgressBar();
+        mCategories = event.getCategories();
+        //TODO setup  spinner values here
     }
 
     public void onEventMainThread(ProductsEvent event) {

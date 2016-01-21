@@ -2,14 +2,14 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.events;
 
 
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
-import com.kyriakosalexandrou.goustomobiledevelopertest.services.ProductServices;
+import com.kyriakosalexandrou.goustomobiledevelopertest.services.ProductsServicesMediator;
 
 import java.util.List;
 
 /**
  * Created by Kyriakos on 19/01/2016.
  * <p/>
- * The event where the response from the {@link ProductServices#getProductsRequest} gets stored
+ * The event where the response from the {@link ProductsServicesMediator#getProductsRequest} gets stored
  */
 public class ProductsEvent {
     private List<Product> mProducts;

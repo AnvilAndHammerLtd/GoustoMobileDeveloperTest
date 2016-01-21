@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/top_banner_image"
-        android:padding="@dimen/main_activity_parent_margin" />
+        android:padding="@dimen/main_activity_parent_margin"
+        tools:listitem="@layout/item_product" />
 
 </RelativeLayout>
