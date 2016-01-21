@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.kyriakosalexandrou.goustomobiledevelopertest.R;
 import com.kyriakosalexandrou.goustomobiledevelopertest.Util;
@@ -21,6 +22,7 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.models.Category;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
 import com.kyriakosalexandrou.goustomobiledevelopertest.services.ProductsServicesMediator;
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.activities.BaseActivity;
+import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.CategoriesSpinnerAdapter;
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.ProductsAdapter;
 
 import java.util.List;
@@ -37,11 +39,13 @@ public class ProductsFragment extends BaseFragment {
     private ProductsAdapter mProductsAdapter;
 
     private ImageView mTopBannerImage;
+    private Spinner mCategoriesSpinner;
 
     private List<Product> mProducts;
     private List<Category> mCategories;
 
     private ProductsServicesMediator mProductsServicesMediator;
+    private CategoriesSpinnerAdapter mCategoriesSpinnerAdapter;
 
     public ProductsFragment() {
     }
@@ -68,11 +72,13 @@ public class ProductsFragment extends BaseFragment {
     public void bindViews(View view) {
         mProductsList = (ListView) view.findViewById(R.id.products_list);
         mTopBannerImage = (ImageView) view.findViewById(R.id.top_banner_image);
+        mCategoriesSpinner = (Spinner) view.findViewById(R.id.categories_spinner);
     }
 
     @Override
     public void setAdapters() {
         mProductsAdapter = new ProductsAdapter(getContext());
+        mCategoriesSpinnerAdapter = new CategoriesSpinnerAdapter(getContext());
     }
 
     @Override
@@ -81,6 +87,17 @@ public class ProductsFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 goToProductFullDetailsFragment(mProducts.get(position));
+            }
+        });
+
+        mCategoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCategoriesSpinner.setSelection(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }
@@ -118,7 +135,14 @@ public class ProductsFragment extends BaseFragment {
         EventBus.getDefault().removeStickyEvent(event);
         getProgressBarHelper().hideProgressBar();
         mCategories = event.getCategories();
-        //TODO setup  spinner values here
+
+        setCategoriesSpinnerAdapter();
+    }
+
+    private void setCategoriesSpinnerAdapter() {
+        mCategories.add(new Category(getResources().getString(R.string.all_categories)));
+        mCategoriesSpinnerAdapter.setCategories(mCategories);
+        mCategoriesSpinner.setAdapter(mCategoriesSpinnerAdapter);
     }
 
     public void onEventMainThread(ProductsEvent event) {
