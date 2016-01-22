@@ -1,16 +1,20 @@
 package com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kyriakosalexandrou.goustomobiledevelopertest.R;
-import com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes.ImagesContainer;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.Category;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes.ImagesContainer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,9 +23,11 @@ import java.util.List;
 /**
  * Created by Kyriakos on 19/01/2016.
  */
-public class ProductsAdapter extends BaseAdapter {
+public class ProductsAdapter extends BaseAdapter implements Filterable {
     private List<Product> mProducts = new ArrayList<>();
+    private List<Product> mFilteredProducts = new ArrayList<>();
     private Context mContext;
+    private ProductFilter mFilter = new ProductFilter();
 
     public ProductsAdapter(Context context) {
         mContext = context;
@@ -34,12 +40,12 @@ public class ProductsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mProducts.size();
+        return mFilteredProducts.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mProducts.get(position);
+        return mFilteredProducts.get(position);
     }
 
     @Override
@@ -58,17 +64,15 @@ public class ProductsAdapter extends BaseAdapter {
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView description = (TextView) convertView.findViewById(R.id.description);
 
-        Product product = mProducts.get(position);
-
+        Product product = mFilteredProducts.get(position);
 
         List<ImagesContainer> imagesContainers = product.getImagesContainers();
-        if(imagesContainers != null && !imagesContainers.isEmpty()){
+        if (imagesContainers != null && !imagesContainers.isEmpty()) {
             String mainProductImage = imagesContainers.get(0).getSize750().getUrl();
             setProductImage(mainProductImage, imageview);
-        } else{
+        } else {
             imageview.setImageResource(R.drawable.ic_wink);
         }
-//
 
 //        ImagesContainer imagesContainer = product.getImagesContainer();
 //        if(imagesContainer != null && imagesContainer != null){
@@ -77,7 +81,6 @@ public class ProductsAdapter extends BaseAdapter {
 //        } else{
 //            imageview.setImageResource(R.drawable.ic_wink);
 //        }
-
 
         name.setText(product.getTitle());
         description.setText(product.getDescription());
@@ -90,5 +93,47 @@ public class ProductsAdapter extends BaseAdapter {
                 .load(imageURL)
                 .placeholder(R.drawable.ic_wink)
                 .into(imageview);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    private class ProductFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            constraint = constraint.toString().toLowerCase();
+            String allCategories = mContext.getResources().getString(R.string.all_categories);
+
+            if (constraint == null || constraint.length() == 0 || constraint.equals(allCategories.toLowerCase())) {
+                results.values = mProducts;
+                results.count = mProducts.size();
+            } else {
+
+                ArrayList<Product> filteredProducts = new ArrayList<Product>();
+
+                for (Product product : mProducts) {
+                    for (int i = 0; i < product.getCategories().size(); i++) {
+                        Category category = product.getCategories().get(i);
+
+                        if (category.getTitle().toString().toLowerCase().equals(constraint.toString().toLowerCase())) {
+                            filteredProducts.add(product);
+                        }
+                    }
+                }
+                results.values = filteredProducts;
+                results.count = filteredProducts.size();
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mFilteredProducts = (ArrayList<Product>) results.values;
+            notifyDataSetChanged();
+        }
     }
 }

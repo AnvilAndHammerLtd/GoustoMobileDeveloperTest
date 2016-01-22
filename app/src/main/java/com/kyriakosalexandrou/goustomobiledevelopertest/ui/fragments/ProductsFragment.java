@@ -94,6 +94,9 @@ public class ProductsFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCategoriesSpinner.setSelection(position);
+
+                Category category = mCategoriesSpinnerAdapter.getItem(position);
+                mProductsAdapter.getFilter().filter(category.getTitle());
             }
 
             @Override
@@ -115,7 +118,6 @@ public class ProductsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getCategoriesRequest();
         getProductsRequest();
     }
 
@@ -143,15 +145,16 @@ public class ProductsFragment extends BaseFragment {
         mCategories.add(new Category(getResources().getString(R.string.all_categories)));
         mCategoriesSpinnerAdapter.setCategories(mCategories);
         mCategoriesSpinner.setAdapter(mCategoriesSpinnerAdapter);
+        mCategoriesSpinner.setSelection(mCategoriesSpinner.getCount()-1);
     }
 
     public void onEventMainThread(ProductsEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
-        getProgressBarHelper().hideProgressBar();
         mProducts = event.getProducts();
 
         mProductsAdapter.setProducts(mProducts);
         mProductsList.setAdapter(mProductsAdapter);
+        getCategoriesRequest();
     }
 
     public void onEventMainThread(ErrorEvent event) {

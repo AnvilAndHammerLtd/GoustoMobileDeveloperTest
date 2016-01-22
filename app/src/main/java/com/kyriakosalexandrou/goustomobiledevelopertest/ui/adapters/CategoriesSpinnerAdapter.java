@@ -2,6 +2,7 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,21 +33,24 @@ public class CategoriesSpinnerAdapter implements SpinnerAdapter {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        return getItemView(position, convertView, parent);
+    }
+
+    private View getItemView(int position, View convertView, ViewGroup parent) {
         /*
         using the view holder pattern to reuse views. This is probably an overkill as it currently
         seems there aren't a lot of categories. However, requirements change and we should build in
         such a way
-         */
+        */
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_spinner, null);
             TextView text = (TextView) convertView.findViewById(R.id.title);
             mViewHolder.setText(text);
         }
-        mViewHolder.getText().setText(mCategories.get(position).getTitle());
 
+        mViewHolder.getText().setText(mCategories.get(position).getTitle());
         return convertView;
     }
-
 
     @Override
     public void registerDataSetObserver(DataSetObserver observer) {
@@ -64,7 +68,7 @@ public class CategoriesSpinnerAdapter implements SpinnerAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Category getItem(int position) {
         return mCategories.get(position);
     }
 
@@ -80,7 +84,7 @@ public class CategoriesSpinnerAdapter implements SpinnerAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getDropDownView(position, convertView, parent);
+        return getItemView(position, convertView, parent);
     }
 
     @Override
