@@ -28,11 +28,10 @@
 
     <Spinner
         android:id="@id/categories_spinner"
+        style="@style/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@android:style/Widget.Spinner"
         android:layout_alignParentBottom="true"
-        android:spinnerMode="dropdown"
         tools:listitem="@android:layout/simple_spinner_dropdown_item"
         tools:visibility="visible" />
 

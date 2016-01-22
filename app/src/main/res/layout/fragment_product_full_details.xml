@@ -29,13 +29,14 @@
 
         <TextView
             android:id="@+id/id_label"
+            style="@style/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/product_id_label"
-            android:textStyle="bold" />
+            android:text="@string/product_id_label" />
 
         <TextView
             android:id="@+id/id_value"
+            style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="6T4RE" />
@@ -50,13 +51,14 @@
 
         <TextView
             android:id="@+id/title_label"
+            style="@style/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/product_title_label"
-            android:textStyle="bold" />
+            android:text="@string/product_title_label" />
 
         <TextView
             android:id="@+id/title_value"
+            style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Koupepia" />
@@ -71,13 +73,14 @@
 
         <TextView
             android:id="@+id/description_label"
+            style="@style/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/product_description_label"
-            android:textStyle="bold" />
+            android:text="@string/product_description_label" />
 
         <TextView
             android:id="@+id/description_value"
+            style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="En pezounte" />
@@ -92,13 +95,14 @@
 
         <TextView
             android:id="@+id/price_label"
+            style="@style/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/product_price_label"
-            android:textStyle="bold" />
+            android:text="@string/product_price_label" />
 
         <TextView
             android:id="@+id/price_value"
+            style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="£17" />
@@ -113,13 +117,14 @@
 
         <TextView
             android:id="@+id/age_restricted_label"
+            style="@style/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/product_age_restricted_label"
-            android:textStyle="bold" />
+            android:text="@string/product_age_restricted_label" />
 
         <TextView
             android:id="@+id/age_restricted_value"
+            style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="18yes" />
@@ -134,13 +139,14 @@
 
         <TextView
             android:id="@+id/limit_per_person_label"
+            style="@style/label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/product_limit_per_person"
-            android:textStyle="bold" />
+            android:text="@string/product_limit_per_person" />
 
         <TextView
             android:id="@+id/limit_per_person_value"
+            style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="5 boxes" />

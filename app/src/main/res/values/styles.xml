@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,16 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-<!--
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
--->
 
     <style name="main_activity_parent">
         <item name="android:layout_width">match_parent</item>
@@ -24,10 +14,32 @@
         <item name="android:padding">@dimen/main_activity_parent_margin</item>
     </style>
 
-    <style name="edit_text">
+    <style name="label" parent="@android:style/TextAppearance">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="value" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/text_size_medium_large</item>
+    </style>
+
+    <style name="spinner" parent="@android:style/Widget.Spinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <style name="item_text_spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart" tools:targetApi="jelly_bean_mr1">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">@dimen/margin_small</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/margin_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="progress_bar_container">
@@ -64,12 +76,4 @@
         <item name="android:visibility">visible</item>
     </style>
 
-
-
-
-
-
-
-
-
-    </resources>
+</resources>
