@@ -55,8 +55,7 @@ https://api.gousto.co.uk/products/v2.0/categories
 Returns a list of categories for additional products.
 
 Example:
-https://api.gousto.co.uk/products/v2.0/products?includes[]=categories&includes[]=attr
-ibutes&image_sizes[]=750
+https://api.gousto.co.uk/products/v2.0/products?includes[]=categories&includes[]=attributes&image_sizes[]=750
 
 - "image_sizes" array specifies that the returned object will include images with
 widths of requested sizes (or the closest bigger size than requested); that
