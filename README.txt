@@ -19,13 +19,13 @@ IMAGES NOT FOUND json response
 
 currently I have the app to only accept a list of images. Therefore, if an image object is actually retrieved instead of an array it will crash
 
-
 *****************************************************************************************************************
 The following libraries where used:
 -retrofit 1.9.0
 -gson 2.2.4
 -eventbus 2.4.0
 -picasso 2.4.0
+
 *****************************************************************************************************************
 known issues:
 -choosing a product to see the details and then navigating back to the first screen causes the app to re-fetch the
@@ -35,10 +35,8 @@ Future improvements that would have been nice:
 - cache all the products and categories objects into an SQLite(could use greenDAO etc.).
 - UI styling. Use recycleView to make product images to scroll horizontally when viewing the full details of a product
 - swipe between products when looking at the full details of a product
+
 *****************************************************************************************************************
-
-
-
 Mobile Developer Test
 
 We would like to ask you to create a simple project in a platform specific IDE (Xcode

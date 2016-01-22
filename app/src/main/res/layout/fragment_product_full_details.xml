@@ -127,7 +127,7 @@
             style="@style/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="18yes" />
+            tools:text="yes" />
     </LinearLayout>
 
     <LinearLayout
