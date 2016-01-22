@@ -1,3 +1,44 @@
+********************************************** KYRIAKOS ALEXANDROU **********************************************
+22/01/2016 MY PERSONAL NOTES:
+*****************************************************************************************************************
+Retrieving images from the server issue (not sure if this is how it should have been or if it was a trick or if it was a bug)
+When an image is not found from the server then it returns an empty list, however when an image is found then an object is returned instead of an array.
+The following error will happen when you try to serialize the json data to a wrong variable type. It makes sense, you can't set an array to an object or vice versa.
+com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 5855 path $.data[10].images
+
+example:
+IMAGES FOUND json response
+      "images": {
+        "750": {
+          "url": "https:\/\/d1zy6g4gck72w2.cloudfront.net\/cms\/product-image-landscape\/AP-1FCD-DES-02-P-x750.jpg",
+          "width": 750
+        }
+      }
+IMAGES NOT FOUND json response
+"images": []
+
+currently I have the app to only accept a list of images. Therefore, if an image object is actually retrieved instead of an array it will crash
+
+
+*****************************************************************************************************************
+The following libraries where used:
+-retrofit 1.9.0
+-gson 2.2.4
+-eventbus 2.4.0
+-picasso 2.4.0
+*****************************************************************************************************************
+known issues:
+-choosing a product to see the details and then navigating back to the first screen causes the app to re-fetch the
+data from the server and eventually refreshing the state of all the views to the start
+*****************************************************************************************************************
+Future improvements that would have been nice:
+- cache all the products and categories objects into an SQLite(could use greenDAO etc.).
+- UI styling. Use recycleView to make product images to scroll horizontally when viewing the full details of a product
+- swipe between products when looking at the full details of a product
+*****************************************************************************************************************
+
+
+
 Mobile Developer Test
 
 We would like to ask you to create a simple project in a platform specific IDE (Xcode
@@ -45,10 +86,3 @@ the selected category)
 ● Create a Product Detail page with some transition between the screens
 ● Provide landscape support (with some UI adjustment, for example grid
 instead of the list in the landscape mode etc.)
-
-MY PERSONAL NOTES:
-
-when an image is not found from the server then it returns an empty list, however when an image is found then an object is returned instead of an array.
-The following error will happen when you try to serialize the json data to a wrong variable type. It makes sense, you can't set an array to an object or vice versa.
-com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 5855 path $.data[10].images
-
