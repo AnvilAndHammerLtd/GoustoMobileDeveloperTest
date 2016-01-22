@@ -1,4 +1,4 @@
-********************************************** KYRIAKOS ALEXANDROU **********************************************
+﻿********************************************** KYRIAKOS ALEXANDROU **********************************************
 22/01/2016 MY PERSONAL NOTES:
 *****************************************************************************************************************
 Retrieving images from the server issue (not sure if this is how it should have been or if it was a trick or if it was a bug)
@@ -30,11 +30,15 @@ The following libraries where used:
 known issues:
 -choosing a product to see the details and then navigating back to the first screen causes the app to re-fetch the
 data from the server and eventually refreshing the state of all the views to the start
+
 *****************************************************************************************************************
 Future improvements that would have been nice:
 - cache all the products and categories objects into an SQLite(could use greenDAO etc.).
 - UI styling. Use recycleView to make product images to scroll horizontally when viewing the full details of a product
 - swipe between products when looking at the full details of a product
+- a custom UI spinner to make it look more close to the Gousto brand
+- different UI for landscape mode
+- animations etc.
 
 *****************************************************************************************************************
 Mobile Developer Test
