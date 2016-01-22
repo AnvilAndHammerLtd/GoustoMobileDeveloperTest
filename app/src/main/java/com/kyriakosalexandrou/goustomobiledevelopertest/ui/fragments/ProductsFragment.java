@@ -18,6 +18,7 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.events.CategoriesEvent;
 import com.kyriakosalexandrou.goustomobiledevelopertest.events.ErrorEvent;
 import com.kyriakosalexandrou.goustomobiledevelopertest.events.ProductsEvent;
 import com.kyriakosalexandrou.goustomobiledevelopertest.helpers.BaseProgressBarHelper;
+import com.kyriakosalexandrou.goustomobiledevelopertest.models.AllCategories;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Category;
 import com.kyriakosalexandrou.goustomobiledevelopertest.models.Product;
 import com.kyriakosalexandrou.goustomobiledevelopertest.services.ProductsServicesMediator;
@@ -96,7 +97,11 @@ public class ProductsFragment extends BaseFragment {
                 mCategoriesSpinner.setSelection(position);
 
                 Category category = mCategoriesSpinnerAdapter.getItem(position);
-                mProductsAdapter.getFilter().filter(category.getTitle());
+
+                mProductsAdapter.filterByType(category, ProductsAdapter.FilterBy.ID);
+                // you can also search by category title instead of ID
+//                mProductsAdapter.filterByType(category, ProductsAdapter.FilterBy.TITLE);
+
             }
 
             @Override
@@ -142,7 +147,7 @@ public class ProductsFragment extends BaseFragment {
     }
 
     private void setCategoriesSpinnerAdapter() {
-        mCategories.add(new Category(getResources().getString(R.string.all_categories)));
+        mCategories.add(new AllCategories(getContext()));
         mCategoriesSpinnerAdapter.setCategories(mCategories);
         mCategoriesSpinner.setAdapter(mCategoriesSpinnerAdapter);
         mCategoriesSpinner.setSelection(mCategoriesSpinner.getCount()-1);

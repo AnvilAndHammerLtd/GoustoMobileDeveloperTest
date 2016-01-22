@@ -19,10 +19,6 @@ public class Category {
     @Expose
     private Boolean isDefault;
 
-    public Category(String title) {
-        this.title = title;
-    }
-
     /**
      * 
      * @return
