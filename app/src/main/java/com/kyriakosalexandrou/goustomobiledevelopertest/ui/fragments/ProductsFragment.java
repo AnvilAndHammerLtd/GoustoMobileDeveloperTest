@@ -114,7 +114,7 @@ public class ProductsFragment extends BaseFragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        ft.add(R.id.fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
         ft.addToBackStack(ProductFullDetailsFragment.TAG);
         ft.commit();
         fm.executePendingTransactions();
