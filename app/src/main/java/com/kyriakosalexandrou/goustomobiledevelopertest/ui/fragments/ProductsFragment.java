@@ -77,12 +77,6 @@ public class ProductsFragment extends BaseFragment {
     }
 
     @Override
-    public void setAdapters() {
-        mProductsAdapter = new ProductsAdapter(getContext());
-        mCategoriesSpinnerAdapter = new CategoriesSpinnerAdapter(getContext());
-    }
-
-    @Override
     public void setListeners() {
         mProductsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -142,16 +136,18 @@ public class ProductsFragment extends BaseFragment {
     }
 
     private void setCategoriesSpinnerAdapter() {
+        mCategoriesSpinnerAdapter = new CategoriesSpinnerAdapter(getContext());
         mCategories.add(new AllCategories(getContext()));
         mCategoriesSpinnerAdapter.setCategories(mCategories);
         mCategoriesSpinner.setAdapter(mCategoriesSpinnerAdapter);
-        mCategoriesSpinner.setSelection(mCategoriesSpinner.getCount()-1);
+        mCategoriesSpinner.setSelection(mCategoriesSpinner.getCount() - 1);
     }
 
     public void onEventMainThread(ProductsEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
         mProducts = event.getProducts();
 
+        mProductsAdapter = new ProductsAdapter(getContext());
         mProductsAdapter.setProducts(mProducts);
         mProductsList.setAdapter(mProductsAdapter);
         getCategoriesRequest();
