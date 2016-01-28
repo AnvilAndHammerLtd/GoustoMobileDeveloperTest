@@ -1,7 +1,6 @@
 package com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,7 @@ public class ProductsAdapter extends BaseAdapter {
     private List<Product> mProducts = new ArrayList<>();
     private List<Product> mFilteredProducts = new ArrayList<>();
     private Context mContext;
-    private ProductFilterByTitle mProductFilterByTitle = new ProductFilterByTitle();
-    private ProductFilterByID mProductFilterByID = new ProductFilterByID();
+    private Filter mFilterByCategoryID = new FilterByCategoryID();
 
     public ProductsAdapter(Context context) {
         mContext = context;
@@ -96,28 +94,16 @@ public class ProductsAdapter extends BaseAdapter {
                 .into(imageview);
     }
 
-    public enum FilterBy {
-        ID, TITLE
-    }
-
     /**
      * filter the products based on a category type
      *
      * @param category the category object to use for filtering
-     * @param filterBy to filter the category based on either {@link FilterBy#ID} or {@link FilterBy#TITLE}
      */
-    public void filterByType(Category category, FilterBy filterBy) {
-        switch (filterBy) {
-            case ID:
-                mProductFilterByID.filter(category.getId());
-                break;
-            case TITLE:
-                mProductFilterByTitle.filter(category.getTitle());
-                break;
-        }
+    public void filterByCategory(Category category) {
+        mFilterByCategoryID.filter(category.getId());
     }
 
-    private class ProductFilterByID extends Filter {
+    private class FilterByCategoryID extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
@@ -136,44 +122,6 @@ public class ProductsAdapter extends BaseAdapter {
                         String id = category.getId().toString().toLowerCase();
 
                         if (id.equals(constraint)) {
-                            filteredProducts.add(product);
-                        }
-                    }
-                }
-                results.values = filteredProducts;
-                results.count = filteredProducts.size();
-            }
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            mFilteredProducts = (ArrayList<Product>) results.values;
-            notifyDataSetChanged();
-        }
-    }
-
-    private class ProductFilterByTitle extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            constraint = constraint.toString().toLowerCase();
-            String allCategories = mContext.getResources().getString(R.string.all_categories);
-
-            if (constraint == null || constraint.length() == 0 || constraint.equals(allCategories.toLowerCase())) {
-                results.values = mProducts;
-                results.count = mProducts.size();
-            } else {
-
-                ArrayList<Product> filteredProducts = new ArrayList<Product>();
-
-                for (Product product : mProducts) {
-                    for (int i = 0; i < product.getCategories().size(); i++) {
-                        Category category = product.getCategories().get(i);
-                        String title = category.getTitle().toString().toLowerCase();
-
-                        if (title.equals(constraint)) {
                             filteredProducts.add(product);
                         }
                     }

@@ -95,13 +95,8 @@ public class ProductsFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCategoriesSpinner.setSelection(position);
-
                 Category category = mCategoriesSpinnerAdapter.getItem(position);
-
-                mProductsAdapter.filterByType(category, ProductsAdapter.FilterBy.ID);
-                // you can also search by category title instead of ID
-//                mProductsAdapter.filterByType(category, ProductsAdapter.FilterBy.TITLE);
-
+                mProductsAdapter.filterByCategory(category);
             }
 
             @Override
