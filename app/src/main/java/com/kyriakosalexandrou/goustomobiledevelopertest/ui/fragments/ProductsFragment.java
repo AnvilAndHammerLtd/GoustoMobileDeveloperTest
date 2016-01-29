@@ -103,7 +103,13 @@ public class ProductsFragment extends BaseFragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+
+        if(getResources().getBoolean(R.bool.is_landscape)){
+            ft.add(R.id.right_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        } else{
+            ft.add(R.id.main_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        }
+
         ft.addToBackStack(ProductFullDetailsFragment.TAG);
         ft.commit();
         fm.executePendingTransactions();

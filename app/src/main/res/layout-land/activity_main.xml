@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/parentContainer"
+    style="@style/main_activity_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:weightSum="1"
+    tools:context="com.kyriakosalexandrou.goustomobiledevelopertest.ui.activities.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/main_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        tools:layout="@layout/fragment_products"/>
+
+    <FrameLayout
+        android:id="@+id/right_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        tools:layout="@layout/fragment_products"/>
+
+</LinearLayout>

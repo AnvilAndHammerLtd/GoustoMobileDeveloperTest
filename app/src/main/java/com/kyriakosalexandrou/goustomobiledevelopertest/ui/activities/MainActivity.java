@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
         FragmentManager fm = getSupportFragmentManager();
         ProductsFragment productsFragment = ProductsFragment.newInstance(getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment, productsFragment, ProductsFragment.TAG);
+        ft.replace(R.id.main_fragment, productsFragment, ProductsFragment.TAG);
         ft.addToBackStack(ProductsFragment.TAG);
         ft.commit();
         fm.executePendingTransactions();
