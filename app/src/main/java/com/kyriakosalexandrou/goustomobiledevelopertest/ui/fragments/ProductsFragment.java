@@ -2,8 +2,10 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.ui.activities.BaseActivi
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.CategoriesSpinnerAdapter;
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.ProductsAdapter;
 
+import java.io.Serializable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -35,6 +38,8 @@ import de.greenrobot.event.EventBus;
  */
 public class ProductsFragment extends BaseFragment {
     public static final String TAG = ProductsFragment.class.getName();
+    private static final String PRODUCTS = "PRODUCTS";
+    private static final String CATEGORIES = "CATEGORIES";
 
     private ListView mProductsList;
     private ProductsAdapter mProductsAdapter;
@@ -55,7 +60,6 @@ public class ProductsFragment extends BaseFragment {
         ProductsFragment fragment = new ProductsFragment();
         fragment.setProgressBarHelper(baseProgressBarHelper);
         fragment.mProductsServicesMediator = new ProductsServicesMediator(BaseActivity.REST_ADAPTER);
-
         return fragment;
     }
 
@@ -66,6 +70,19 @@ public class ProductsFragment extends BaseFragment {
         bindViews(view);
         setAdapters();
         setListeners();
+
+        if (savedInstanceState != null) {
+            mProducts = (List<Product>) savedInstanceState.getSerializable(PRODUCTS);
+            mCategories = (List<Category>) savedInstanceState.getSerializable(CATEGORIES);
+
+            setProductsAdapter();
+            setCategoriesSpinnerAdapter();
+            mProductFullDetailsFragment = (ProductFullDetailsFragment) getActivity().getSupportFragmentManager().getFragment(savedInstanceState, ProductFullDetailsFragment.TAG);
+
+        } else {
+            getProductsRequest();
+        }
+
         return view;
     }
 
@@ -99,26 +116,30 @@ public class ProductsFragment extends BaseFragment {
         });
     }
 
+    private ProductFullDetailsFragment mProductFullDetailsFragment;
+
     private void goToProductFullDetailsFragment(Product product) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
+        mProductFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
+        Fragment fragment = fm.findFragmentById(R.id.main_fragment);
 
-        if(getResources().getBoolean(R.bool.is_landscape)){
-            ft.add(R.id.right_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
-        } else{
-            ft.add(R.id.main_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        Log.v(TAG, "back stack count: " + fm.getBackStackEntryCount());
+
+
+        if (getResources().getBoolean(R.bool.is_landscape)) {
+            ft.replace(R.id.right_fragment, mProductFullDetailsFragment, ProductFullDetailsFragment.TAG);
+
+            Log.v(TAG, "landscape REPLACING");
+
+        } else if(fragment != null && (fragment instanceof ProductsFragment)){
+            Log.v(TAG, "portrait ADD");
+            ft.add(R.id.main_fragment, mProductFullDetailsFragment, ProductFullDetailsFragment.TAG);
+            ft.addToBackStack(ProductFullDetailsFragment.TAG);
         }
 
-        ft.addToBackStack(ProductFullDetailsFragment.TAG);
         ft.commit();
         fm.executePendingTransactions();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getProductsRequest();
     }
 
     private void getProductsRequest() {
@@ -137,13 +158,14 @@ public class ProductsFragment extends BaseFragment {
         EventBus.getDefault().removeStickyEvent(event);
         getProgressBarHelper().hideProgressBar();
         mCategories = event.getCategories();
-
+        mCategories.add(new AllCategories(getContext()));
         setCategoriesSpinnerAdapter();
+
+        goToProductFullDetailsFragment(mProducts.get(0));
     }
 
     private void setCategoriesSpinnerAdapter() {
         mCategoriesSpinnerAdapter = new CategoriesSpinnerAdapter(getContext());
-        mCategories.add(new AllCategories(getContext()));
         mCategoriesSpinnerAdapter.setCategories(mCategories);
         mCategoriesSpinner.setAdapter(mCategoriesSpinnerAdapter);
         mCategoriesSpinner.setSelection(mCategoriesSpinner.getCount() - 1);
@@ -152,11 +174,14 @@ public class ProductsFragment extends BaseFragment {
     public void onEventMainThread(ProductsEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
         mProducts = event.getProducts();
+        setProductsAdapter();
+        getCategoriesRequest();
+    }
 
+    private void setProductsAdapter() {
         mProductsAdapter = new ProductsAdapter(getContext());
         mProductsAdapter.setProducts(mProducts);
         mProductsList.setAdapter(mProductsAdapter);
-        getCategoriesRequest();
     }
 
     public void onEventMainThread(ErrorEvent event) {
@@ -175,5 +200,16 @@ public class ProductsFragment extends BaseFragment {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(PRODUCTS, (Serializable) mProducts);
+        outState.putSerializable(CATEGORIES, (Serializable) mCategories);
+        if (mProductFullDetailsFragment != null && mProductFullDetailsFragment.isAdded()) {
+            getActivity().getSupportFragmentManager().putFragment(outState, ProductFullDetailsFragment.TAG, mProductFullDetailsFragment);
+        }
     }
 }

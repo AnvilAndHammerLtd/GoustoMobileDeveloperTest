@@ -9,12 +9,9 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.R;
  */
 public class AllCategories extends Category{
     public static final String ID = "id=all10d0e-bf7d-11e5-90a9-02fada0dd3b9";
-    private Context mContext;
 
     public AllCategories(Context context) {
-        mContext = context;
         setId(ID);
-        setTitle(mContext.getResources().getString(R.string.all_categories));
+        setTitle(context.getResources().getString(R.string.all_categories));
     }
-
 }

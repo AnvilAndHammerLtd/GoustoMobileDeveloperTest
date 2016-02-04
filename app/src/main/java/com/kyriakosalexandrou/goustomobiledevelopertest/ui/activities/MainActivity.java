@@ -10,6 +10,7 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.ui.fragments.ProductsFra
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getName();
+    private ProductsFragment mProductsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +23,18 @@ public class MainActivity extends BaseActivity {
                 )
         );
 
-        goToProductsFragment();
+        if (savedInstanceState != null) {
+            mProductsFragment = (ProductsFragment) getSupportFragmentManager().getFragment(savedInstanceState, ProductsFragment.TAG);
+        } else {
+            goToProductsFragment();
+        }
     }
 
     private void goToProductsFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        ProductsFragment productsFragment = ProductsFragment.newInstance(getProgressBarHelper());
+        mProductsFragment = ProductsFragment.newInstance(getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.main_fragment, productsFragment, ProductsFragment.TAG);
+        ft.replace(R.id.main_fragment, mProductsFragment, ProductsFragment.TAG);
         ft.addToBackStack(ProductsFragment.TAG);
         ft.commit();
         fm.executePendingTransactions();
@@ -44,5 +49,11 @@ public class MainActivity extends BaseActivity {
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, ProductsFragment.TAG, mProductsFragment);
     }
 }
