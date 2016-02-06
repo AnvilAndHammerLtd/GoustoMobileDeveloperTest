@@ -127,12 +127,12 @@ public class ProductsFragment extends BaseFragment {
         Log.v(TAG, "back stack count: " + fm.getBackStackEntryCount());
 
 
-        if (getResources().getBoolean(R.bool.is_landscape)) {
+        if (!BaseActivity.isPortrait()) {
             ft.replace(R.id.right_fragment, mProductFullDetailsFragment, ProductFullDetailsFragment.TAG);
 
             Log.v(TAG, "landscape REPLACING");
 
-        } else if(fragment != null && (fragment instanceof ProductsFragment)){
+        } else if (fragment != null && (fragment instanceof ProductsFragment)) {
             Log.v(TAG, "portrait ADD");
             ft.add(R.id.main_fragment, mProductFullDetailsFragment, ProductFullDetailsFragment.TAG);
             ft.addToBackStack(ProductFullDetailsFragment.TAG);
@@ -160,8 +160,10 @@ public class ProductsFragment extends BaseFragment {
         mCategories = event.getCategories();
         mCategories.add(new AllCategories(getContext()));
         setCategoriesSpinnerAdapter();
+        if (!BaseActivity.isPortrait()) {
+            goToProductFullDetailsFragment(mProducts.get(0));
 
-        goToProductFullDetailsFragment(mProducts.get(0));
+        }
     }
 
     private void setCategoriesSpinnerAdapter() {
@@ -208,6 +210,11 @@ public class ProductsFragment extends BaseFragment {
 
         outState.putSerializable(PRODUCTS, (Serializable) mProducts);
         outState.putSerializable(CATEGORIES, (Serializable) mCategories);
+
+//        if(){
+//
+//        }
+
         if (mProductFullDetailsFragment != null && mProductFullDetailsFragment.isAdded()) {
             getActivity().getSupportFragmentManager().putFragment(outState, ProductFullDetailsFragment.TAG, mProductFullDetailsFragment);
         }

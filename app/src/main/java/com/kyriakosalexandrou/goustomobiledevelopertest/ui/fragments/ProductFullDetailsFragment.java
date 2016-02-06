@@ -109,7 +109,4 @@ public class ProductFullDetailsFragment extends BaseFragment {
         outState.putSerializable(PRODUCT, mProduct);
     }
 
-    public Product getProduct() {
-        return mProduct;
-    }
 }
