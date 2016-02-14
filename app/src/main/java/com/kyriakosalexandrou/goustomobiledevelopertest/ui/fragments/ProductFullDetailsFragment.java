@@ -68,7 +68,6 @@ public class ProductFullDetailsFragment extends BaseFragment {
 //            mImage.setImageResource(R.drawable.ic_wink);
 //        }
 
-
         mId.setText(mProduct.getId());
         mTitle.setText(mProduct.getTitle());
         mDescription.setText(mProduct.getDescription());

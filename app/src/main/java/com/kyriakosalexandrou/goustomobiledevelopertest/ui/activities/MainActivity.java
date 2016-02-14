@@ -24,7 +24,7 @@ public class MainActivity extends BaseActivity {
         );
 
         if (savedInstanceState != null) {
-            mProductsFragment = (ProductsFragment) getSupportFragmentManager().getFragment(savedInstanceState, ProductsFragment.TAG);
+            mProductsFragment = (ProductsFragment) getSupportFragmentManager().findFragmentByTag(ProductsFragment.TAG);
         } else {
             goToProductsFragment();
         }

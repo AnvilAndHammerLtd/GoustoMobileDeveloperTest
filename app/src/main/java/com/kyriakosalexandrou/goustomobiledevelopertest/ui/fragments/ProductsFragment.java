@@ -2,10 +2,8 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +38,7 @@ public class ProductsFragment extends BaseFragment {
     public static final String TAG = ProductsFragment.class.getName();
     private static final String PRODUCTS = "PRODUCTS";
     private static final String CATEGORIES = "CATEGORIES";
+    private static final String SELECTED_PRODUCT = "SELECTED_PRODUCT";
 
     private ListView mProductsList;
     private ProductsAdapter mProductsAdapter;
@@ -47,6 +46,7 @@ public class ProductsFragment extends BaseFragment {
     private ImageView mTopBannerImage;
     private Spinner mCategoriesSpinner;
 
+    private Product mSelectedProduct;
     private List<Product> mProducts;
     private List<Category> mCategories;
 
@@ -74,11 +74,25 @@ public class ProductsFragment extends BaseFragment {
         if (savedInstanceState != null) {
             mProducts = (List<Product>) savedInstanceState.getSerializable(PRODUCTS);
             mCategories = (List<Category>) savedInstanceState.getSerializable(CATEGORIES);
+            mSelectedProduct = (Product) savedInstanceState.getSerializable(SELECTED_PRODUCT);
 
             setProductsAdapter();
             setCategoriesSpinnerAdapter();
-            mProductFullDetailsFragment = (ProductFullDetailsFragment) getActivity().getSupportFragmentManager().getFragment(savedInstanceState, ProductFullDetailsFragment.TAG);
+            ProductFullDetailsFragment productFullDetailsFragment = (ProductFullDetailsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(ProductFullDetailsFragment.TAG);
 
+            if (!BaseActivity.isPortrait()) {
+                if (productFullDetailsFragment == null) {
+                    /*
+                    TODO if there isn't a product already selected when rotating to landscape we want to set a default product as selected
+                    when doing it this way then something happens to the main_fragment and it does not respond, not sure why this is happening
+                     */
+//                    mSelectedProduct = mProducts.get(0);
+//                    productFullDetailsFragment = ProductFullDetailsFragment.newInstance(mSelectedProduct, getProgressBarHelper());
+//                    goToProductFullDetailsFragment(productFullDetailsFragment);
+                } else {
+                    //TODO maybe if the main fragment contains the details of a product it should be removed??
+                }
+            }
         } else {
             getProductsRequest();
         }
@@ -98,7 +112,9 @@ public class ProductsFragment extends BaseFragment {
         mProductsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                goToProductFullDetailsFragment(mProducts.get(position));
+                mSelectedProduct = mProducts.get(position);
+                ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(mSelectedProduct, getProgressBarHelper());
+                goToProductFullDetailsFragment(productFullDetailsFragment);
             }
         });
 
@@ -116,26 +132,15 @@ public class ProductsFragment extends BaseFragment {
         });
     }
 
-    private ProductFullDetailsFragment mProductFullDetailsFragment;
-
-    private void goToProductFullDetailsFragment(Product product) {
+    private void goToProductFullDetailsFragment(ProductFullDetailsFragment productFullDetailsFragment) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        mProductFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
-        Fragment fragment = fm.findFragmentById(R.id.main_fragment);
 
-        Log.v(TAG, "back stack count: " + fm.getBackStackEntryCount());
-
-
-        if (!BaseActivity.isPortrait()) {
-            ft.replace(R.id.right_fragment, mProductFullDetailsFragment, ProductFullDetailsFragment.TAG);
-
-            Log.v(TAG, "landscape REPLACING");
-
-        } else if (fragment != null && (fragment instanceof ProductsFragment)) {
-            Log.v(TAG, "portrait ADD");
-            ft.add(R.id.main_fragment, mProductFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        if (BaseActivity.isPortrait()) {
+            ft.add(R.id.main_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
             ft.addToBackStack(ProductFullDetailsFragment.TAG);
+        } else {
+            ft.replace(R.id.right_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
         }
 
         ft.commit();
@@ -161,8 +166,9 @@ public class ProductsFragment extends BaseFragment {
         mCategories.add(new AllCategories(getContext()));
         setCategoriesSpinnerAdapter();
         if (!BaseActivity.isPortrait()) {
-            goToProductFullDetailsFragment(mProducts.get(0));
-
+            mSelectedProduct = mProducts.get(0);
+            ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(mSelectedProduct, getProgressBarHelper());
+            goToProductFullDetailsFragment(productFullDetailsFragment);
         }
     }
 
@@ -207,16 +213,8 @@ public class ProductsFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        outState.putSerializable(SELECTED_PRODUCT, mSelectedProduct);
         outState.putSerializable(PRODUCTS, (Serializable) mProducts);
         outState.putSerializable(CATEGORIES, (Serializable) mCategories);
-
-//        if(){
-//
-//        }
-
-        if (mProductFullDetailsFragment != null && mProductFullDetailsFragment.isAdded()) {
-            getActivity().getSupportFragmentManager().putFragment(outState, ProductFullDetailsFragment.TAG, mProductFullDetailsFragment);
-        }
     }
 }
