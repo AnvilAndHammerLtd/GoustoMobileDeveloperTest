@@ -4,7 +4,7 @@
     android:id="@+id/parentContainer"
     style="@style/main_activity_parent"
     android:background="@android:color/white"
-    tools:context="com.kyriakosalexandrou.goustomobiledevelopertest.ui.activities.MainActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment"
