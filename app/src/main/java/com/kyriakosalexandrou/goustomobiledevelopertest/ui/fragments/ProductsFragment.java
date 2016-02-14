@@ -26,6 +26,7 @@ import com.kyriakosalexandrou.goustomobiledevelopertest.ui.activities.BaseActivi
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.CategoriesSpinnerAdapter;
 import com.kyriakosalexandrou.goustomobiledevelopertest.ui.adapters.ProductsAdapter;
 
+import java.io.Serializable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -35,6 +36,9 @@ import de.greenrobot.event.EventBus;
  */
 public class ProductsFragment extends BaseFragment {
     public static final String TAG = ProductsFragment.class.getName();
+    private static final String PRODUCTS = "PRODUCTS";
+    private static final String CATEGORIES = "CATEGORIES";
+    private static final String SELECTED_PRODUCT = "SELECTED_PRODUCT";
 
     private ListView mProductsList;
     private ProductsAdapter mProductsAdapter;
@@ -42,6 +46,7 @@ public class ProductsFragment extends BaseFragment {
     private ImageView mTopBannerImage;
     private Spinner mCategoriesSpinner;
 
+    private Product mSelectedProduct;
     private List<Product> mProducts;
     private List<Category> mCategories;
 
@@ -55,7 +60,6 @@ public class ProductsFragment extends BaseFragment {
         ProductsFragment fragment = new ProductsFragment();
         fragment.setProgressBarHelper(baseProgressBarHelper);
         fragment.mProductsServicesMediator = new ProductsServicesMediator(BaseActivity.REST_ADAPTER);
-
         return fragment;
     }
 
@@ -66,6 +70,33 @@ public class ProductsFragment extends BaseFragment {
         bindViews(view);
         setAdapters();
         setListeners();
+
+        if (savedInstanceState != null) {
+            mProducts = (List<Product>) savedInstanceState.getSerializable(PRODUCTS);
+            mCategories = (List<Category>) savedInstanceState.getSerializable(CATEGORIES);
+            mSelectedProduct = (Product) savedInstanceState.getSerializable(SELECTED_PRODUCT);
+
+            setProductsAdapter();
+            setCategoriesSpinnerAdapter();
+            ProductFullDetailsFragment productFullDetailsFragment = (ProductFullDetailsFragment) getActivity().getSupportFragmentManager().findFragmentByTag(ProductFullDetailsFragment.TAG);
+
+            if (!BaseActivity.isPortrait()) {
+                if (productFullDetailsFragment == null) {
+                    /*
+                    TODO if there isn't a product already selected when rotating to landscape we want to set a default product as selected
+                    when doing it this way then something happens to the main_fragment and it does not respond, not sure why this is happening
+                     */
+//                    mSelectedProduct = mProducts.get(0);
+//                    productFullDetailsFragment = ProductFullDetailsFragment.newInstance(mSelectedProduct, getProgressBarHelper());
+//                    goToProductFullDetailsFragment(productFullDetailsFragment);
+                } else {
+                    //TODO maybe if the main fragment contains the details of a product it should be removed??
+                }
+            }
+        } else {
+            getProductsRequest();
+        }
+
         return view;
     }
 
@@ -81,7 +112,9 @@ public class ProductsFragment extends BaseFragment {
         mProductsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                goToProductFullDetailsFragment(mProducts.get(position));
+                mSelectedProduct = mProducts.get(position);
+                ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(mSelectedProduct, getProgressBarHelper());
+                goToProductFullDetailsFragment(productFullDetailsFragment);
             }
         });
 
@@ -99,20 +132,19 @@ public class ProductsFragment extends BaseFragment {
         });
     }
 
-    private void goToProductFullDetailsFragment(Product product) {
+    private void goToProductFullDetailsFragment(ProductFullDetailsFragment productFullDetailsFragment) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(product, getProgressBarHelper());
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
-        ft.addToBackStack(ProductFullDetailsFragment.TAG);
+
+        if (BaseActivity.isPortrait()) {
+            ft.add(R.id.main_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+            ft.addToBackStack(ProductFullDetailsFragment.TAG);
+        } else {
+            ft.replace(R.id.right_fragment, productFullDetailsFragment, ProductFullDetailsFragment.TAG);
+        }
+
         ft.commit();
         fm.executePendingTransactions();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getProductsRequest();
     }
 
     private void getProductsRequest() {
@@ -131,13 +163,17 @@ public class ProductsFragment extends BaseFragment {
         EventBus.getDefault().removeStickyEvent(event);
         getProgressBarHelper().hideProgressBar();
         mCategories = event.getCategories();
-
+        mCategories.add(new AllCategories(getContext()));
         setCategoriesSpinnerAdapter();
+        if (!BaseActivity.isPortrait()) {
+            mSelectedProduct = mProducts.get(0);
+            ProductFullDetailsFragment productFullDetailsFragment = ProductFullDetailsFragment.newInstance(mSelectedProduct, getProgressBarHelper());
+            goToProductFullDetailsFragment(productFullDetailsFragment);
+        }
     }
 
     private void setCategoriesSpinnerAdapter() {
         mCategoriesSpinnerAdapter = new CategoriesSpinnerAdapter(getContext());
-        mCategories.add(new AllCategories(getContext()));
         mCategoriesSpinnerAdapter.setCategories(mCategories);
         mCategoriesSpinner.setAdapter(mCategoriesSpinnerAdapter);
         mCategoriesSpinner.setSelection(mCategoriesSpinner.getCount() - 1);
@@ -146,11 +182,14 @@ public class ProductsFragment extends BaseFragment {
     public void onEventMainThread(ProductsEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
         mProducts = event.getProducts();
+        setProductsAdapter();
+        getCategoriesRequest();
+    }
 
+    private void setProductsAdapter() {
         mProductsAdapter = new ProductsAdapter(getContext());
         mProductsAdapter.setProducts(mProducts);
         mProductsList.setAdapter(mProductsAdapter);
-        getCategoriesRequest();
     }
 
     public void onEventMainThread(ErrorEvent event) {
@@ -169,5 +208,13 @@ public class ProductsFragment extends BaseFragment {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SELECTED_PRODUCT, mSelectedProduct);
+        outState.putSerializable(PRODUCTS, (Serializable) mProducts);
+        outState.putSerializable(CATEGORIES, (Serializable) mCategories);
     }
 }

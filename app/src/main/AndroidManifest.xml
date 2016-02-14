@@ -12,8 +12,7 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner"/>
         <activity
-            android:name=".ui.activities.MainActivity"
-            android:configChanges="orientation|screenSize">
+            android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

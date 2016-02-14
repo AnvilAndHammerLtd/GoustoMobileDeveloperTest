@@ -4,11 +4,13 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * when an image is found from the server then it's data will be
  * stored here in each respective size based on our requested images size
  */
-public class ImagesContainer {
+public class ImagesContainer implements Serializable {
 
     @SerializedName("750")
     @Expose

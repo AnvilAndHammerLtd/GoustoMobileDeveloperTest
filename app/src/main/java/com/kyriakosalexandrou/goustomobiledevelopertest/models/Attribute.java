@@ -4,7 +4,9 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Attribute {
+import java.io.Serializable;
+
+public class Attribute implements Serializable{
 
     @SerializedName("id")
     @Expose

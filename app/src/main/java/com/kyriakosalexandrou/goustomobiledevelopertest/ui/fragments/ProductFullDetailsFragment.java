@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
  */
 public class ProductFullDetailsFragment extends BaseFragment {
     public static final String TAG = ProductFullDetailsFragment.class.getName();
+    private static final String PRODUCT = "PRODUCT";
 
     private Product mProduct;
     private ImageView mImage;
@@ -45,6 +46,11 @@ public class ProductFullDetailsFragment extends BaseFragment {
         bindViews(view);
         setAdapters();
         setListeners();
+
+        if (savedInstanceState != null) {
+            mProduct = (Product) savedInstanceState.getSerializable(PRODUCT);
+        }
+
         setViewsProductValue();
         return view;
     }
@@ -61,7 +67,6 @@ public class ProductFullDetailsFragment extends BaseFragment {
 //        } else {
 //            mImage.setImageResource(R.drawable.ic_wink);
 //        }
-
 
         mId.setText(mProduct.getId());
         mTitle.setText(mProduct.getTitle());
@@ -96,4 +101,11 @@ public class ProductFullDetailsFragment extends BaseFragment {
     @Override
     public void setListeners() {
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(PRODUCT, mProduct);
+    }
+
 }

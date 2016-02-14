@@ -3,10 +3,12 @@ package com.kyriakosalexandrou.goustomobiledevelopertest.models.image_sizes;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Kyriakos on 20/01/2016.
  */
-public abstract class ImageBase {
+public abstract class ImageBase implements Serializable {
     @SerializedName("url")
     @Expose
     private String url;
